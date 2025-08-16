@@ -1,161 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context=".MainActivity">
 
-
-
-    <ScrollView
-        android:id="@+id/scroll"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:outlineSpotShadowColor="#D1C349"
+        android:layout_height="wrap_content"
+
         >
 
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary"
+            android:background="?attr/colorPrimary"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/image_crop"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="centerInside"
+                        android:alpha="0.5"
+                        android:visibility="gone"
+                        android:src="@drawable/undraw_environment_9luj"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:layout_marginTop="32dp"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:layout_centerInParent="true">
+
+                                <TextView
+                                    android:id="@+id/textwaterlevel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/white"
+                                    android:text="Temperature"/>
+
+                                <TextView
+                                    android:id="@+id/temp_value_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_below="@id/textwaterlevel"
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold"
+                                    android:text="0°C"
+                                    android:textSize="24sp"/>
+                            </LinearLayout>
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/progress_temp_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                app:indicatorSize="120dp"
+                                app:indicatorColor="@color/white"
+                                app:trackThickness="8dp"
+                                app:trackColor="#7BD1D1D1"
+                                android:progress="60"/>
+
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:padding="8dp"
+                                android:gravity="center"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/text_view_progress"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/white"
+                                    android:text="Water Level"/>
+
+                                <TextView
+                                    android:id="@+id/water_value_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_below="@id/textwaterlevel"
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold"
+                                    android:textSize="24sp"
+                                    android:text="0%"/>
+                            </LinearLayout>
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/progress_water_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                app:indicatorSize="120dp"
+                                app:indicatorColor="@color/white"
+                                app:trackColor="#7BD1D1D1"
+                                app:trackThickness="8dp"
+                                android:progress="40"/>
+
+                        </RelativeLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="5dp">
 
-
-     <com.google.android.material.card.MaterialCardView
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         app:cardCornerRadius="10dp"
-         app:strokeWidth="0dp">
-         <RelativeLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
-         <ImageView
-             android:id="@+id/image_crop"
-             android:layout_width="150dp"
-             android:layout_height="150dp"
-             android:layout_centerHorizontal="true"
-             android:scaleType="centerInside"
-             android:alpha="0.5"
-             android:src="@drawable/undraw_environment_9luj">
-         </ImageView>
-
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:padding="16dp"
-             android:orientation="horizontal">
-
-             <RelativeLayout
-                 android:layout_width="0dp"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="1">
-
-                 <LinearLayout
-                     android:layout_width="wrap_content"
-                     android:layout_height="match_parent"
-                     android:orientation="vertical"
-                     android:gravity="center"
-                     android:padding="8dp"
-                     android:layout_centerInParent="true"
-                     >
-
-                     <TextView
-                         android:id="@+id/textwaterlevel"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Temperature" />
-
-                     <TextView
-                         android:id="@+id/temp_value_text"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_centerHorizontal="true"
-                         android:layout_below="@id/textwaterlevel"
-                         android:textColor="?attr/colorPrimary"
-                         android:textStyle="bold"
-                         android:text="0°C"
-                         android:textSize="24sp"/>
-                 </LinearLayout>
-
-                 <com.google.android.material.progressindicator.CircularProgressIndicator
-
-                     android:id="@+id/progress_temp_value"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_centerInParent="true"
-                     app:indicatorSize="150dp"
-                     app:trackThickness="8dp"
-                     app:trackColor="#188C8C8C"
-                     android:progress="60" />
-
-
-             </RelativeLayout>
-             <RelativeLayout
-                 android:layout_width="0dp"
-                 android:layout_weight="1"
-                 android:layout_height="wrap_content">
-
-
-
-                 <LinearLayout
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_centerInParent="true"
-                     android:padding="8dp"
-                     android:gravity="center"
-                     android:orientation="vertical">
-                     <TextView
-                         android:id="@+id/text_view_progress"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Water Level" />
-
-
-                     <TextView
-
-                         android:id="@+id/water_value_text"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_centerHorizontal="true"
-                         android:layout_below="@id/textwaterlevel"
-                         android:textColor="?attr/colorPrimary"
-                         android:textStyle="bold"
-                         android:textSize="24sp"
-                         android:text="0%" />
-                 </LinearLayout>
-
-                 <com.google.android.material.progressindicator.CircularProgressIndicator
-                     android:id="@+id/progress_water_value"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_centerInParent="true"
-                     app:indicatorSize="150dp"
-                     app:trackColor="#188C8C8C"
-                     app:trackThickness="8dp"
-                     android:progress="40" />
-
-             </RelativeLayout>
-         </LinearLayout>
-         </RelativeLayout>
-     </com.google.android.material.card.MaterialCardView>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="1dp">
 
                 <LinearLayout
                     android:id="@+id/cardholder1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:strokeWidth="0dp"
-                        app:cardBackgroundColor="#FFF59D"
+                        app:strokeWidth="1dp"
                         android:layout_margin="1dp"
                         app:cardCornerRadius="10dp"
                         android:layout_weight="1">
@@ -174,25 +181,27 @@
                                 android:layout_marginTop="10dp"
                                 android:layout_marginEnd="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:textColor="@color/black"
-                                android:text="Pump water" />
+                                android:text="Pump water"/>
 
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:tint="@color/colorAccent"
+                                android:src="@drawable/water_full_24px"/>
                             <com.google.android.material.switchmaterial.SwitchMaterial
                                 android:id="@+id/switchpump"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_below="@id/switch_title"
-                               android:layout_centerHorizontal="true" />
+                                android:layout_centerHorizontal="true"/>
                         </LinearLayout>
 
                     </com.google.android.material.card.MaterialCardView>
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        
-                        app:cardBackgroundColor="#FFCC80"
                         android:layout_marginStart="5dp"
-                        app:strokeWidth="0dp"
+                        app:strokeWidth="1dp"
                         app:cardCornerRadius="10dp"
                         android:layout_weight="1">
 
@@ -210,18 +219,21 @@
                                 android:layout_marginTop="10dp"
                                 android:layout_marginEnd="10dp"
                                 android:layout_marginBottom="10dp"
-                                android:textColor="@color/black"
-                                android:text="Watering" />
-
+                                android:text="Watering"/>
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:tint="@color/colorAccent"
+                                android:src="@drawable/shower_24px"/>
                             <com.google.android.material.switchmaterial.SwitchMaterial
                                 android:id="@+id/switchwatering"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_centerInParent="true" />
+                                android:layout_centerInParent="true"/>
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
-                <!---->
+
                 <LinearLayout
                     android:id="@+id/cardholder2"
                     android:layout_width="match_parent"
@@ -234,10 +246,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="1dp"
-                        app:cardBackgroundColor="#A5D6A7"
                         android:layout_weight="1"
                         app:cardCornerRadius="10dp"
-                        app:strokeWidth="0dp">
+                        app:strokeWidth="1dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -250,14 +261,18 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:layout_margin="10dp"
-                                android:textColor="@color/black"
-                                android:text="System Status" />
+                                android:text="System Status"/>
 
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:tint="@color/colorAccent"
+                                android:src="@drawable/emergency_24px"/>
                             <com.google.android.material.switchmaterial.SwitchMaterial
                                 android:id="@+id/switchSytsem"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_centerInParent="true" />
+                                android:layout_centerInParent="true"/>
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
@@ -272,67 +287,60 @@
 
             </RelativeLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/reportCard"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/reportCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:strokeWidth="0dp">
+
+                <RelativeLayout
+                    android:id="@+id/layout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:layout_marginTop="1dp"
-                    
-                    app:strokeWidth="0dp">
+                    android:padding="10dp">
 
-                    <RelativeLayout
-                        android:id="@+id/layout1"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/icon2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_baseline_pie_chart_24"
+                        android:textSize="20sp"
+                        app:tint="@color/colorAccent"/>
+                    <TextView
+                        android:id="@+id/tvEmailSender1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp">
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/icon2"
+                        android:layout_toRightOf="@+id/icon2"
+                        android:text="Report"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
 
-                            <ImageView
-                                android:id="@+id/icon2"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/ic_baseline_pie_chart_24"
-                                android:textSize="20sp"
-                                app:tint="@color/purple_500" />
-                        <TextView
-                            android:id="@+id/tvEmailSender1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_toEndOf="@+id/icon2"
-                            android:layout_toRightOf="@+id/icon2"
-                            android:text="Report"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tvEmailTitle1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvEmailSender1"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toEndOf="@+id/icon2"
+                        android:text="Control your watering system"
+                        android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/tvEmailTitle1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tvEmailSender1"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_toEndOf="@+id/icon2"
-                            android:text="Control your watering system"
-                            android:textStyle="bold" />
-
-
-                        <ImageView
-                            android:id="@+id/ivFavorite1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:padding="5dp"
-                            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
-                    </RelativeLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            
+                    <ImageView
+                        android:id="@+id/ivFavorite1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-    </ScrollView>
-
-
-</RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

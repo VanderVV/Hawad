@@ -1,10 +1,11 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -34,6 +35,9 @@ public class HomePage extends AppCompatActivity {
     private RequestQueue requestQueue;
     private MaterialCardView reportCard;
     private static final String API_URL = "https://xpanxn.co.za/api.php";
+    private int currentWaterLevel = 0;
+    private boolean hasShownHighWaterWarning = false;
+    private static final int MAX_WATER_LEVEL = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,41 +63,64 @@ public class HomePage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         // Set up periodic data refresh
         refreshData();
 
         // Set up switch listeners
-
-
         pumpSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
-
-                if(!systemSwitch.isChecked())
-                {
+                if (!systemSwitch.isChecked()) {
+                    showSystemOffDialog();
+                    pumpSwitch.setChecked(false);
                     return;
                 }
+
+                if (isChecked && currentWaterLevel >= MAX_WATER_LEVEL) {
+                    showTankFullDialog();
+                    pumpSwitch.setChecked(false);
+
+                    return;
+                }
+
                 updateSwitchStatus("pump", isChecked);
             }
         });
+
         wateringSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
-                if(!systemSwitch.isChecked())
-                {
+                if (!systemSwitch.isChecked()) {
+                    showSystemOffDialog();
+                    wateringSwitch.setChecked(false);
                     return;
                 }
+
+                if (isChecked && currentWaterLevel <= 10) {
+                    showLowWaterDialog();
+                    wateringSwitch.setChecked(false);
+                    return;
+                }
+
                 updateSwitchStatus("watering", isChecked);
             }
         });
+
         systemSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
-                updateSwitchStatus("system", isChecked);
+                if (!isChecked) {
+                    updateSwitchStatus("watering", false);
+                    updateSwitchStatus("pump", false);
+                    updateSwitchStatus("system", false);
+                    wateringSwitch.setChecked(false);
+                    pumpSwitch.setChecked(false);
+                } else {
+                    updateSwitchStatus("system", true);
+                }
             }
         });
-
-
     }
 
     private void refreshData() {
@@ -104,17 +131,33 @@ public class HomePage extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         try {
                             // Update temperature
                             int temp = response.getInt("temperature");
                             tempProgress.setProgress(temp);
                             tempValue.setText(temp + "°C");
 
-                            // Update water level
-                            int waterLevel = response.getInt("water_level");
-                            waterProgress.setProgress(waterLevel);
-                            waterValue.setText(waterLevel + "%");
+                            // Update water level (converted to percentage with max 26)
+                            int rawWaterLevel = response.getInt("water_level");
+                            int tankPercentage = (rawWaterLevel * 100) / 21;
+                            tankPercentage = (tankPercentage >=95) ? 100 : tankPercentage;
+                            currentWaterLevel =tankPercentage;
+                            waterProgress.setProgress(currentWaterLevel);
+                            waterValue.setText(currentWaterLevel + "%");
+                            if(rawWaterLevel >= 20)
+                            {
+                                updateSwitchStatus("pump", false);
+                                pumpSwitch.setChecked(false);
+                            }
+                            // Check for high water level (only show warning once until level drops)
+                            if (currentWaterLevel >= MAX_WATER_LEVEL * 0.9 && !hasShownHighWaterWarning) {
+                                showHighWaterLevelWarning();
+                                hasShownHighWaterWarning = true;
+
+
+                            } else if (currentWaterLevel < MAX_WATER_LEVEL * 0.9) {
+                                hasShownHighWaterWarning = false;
+                            }
 
                             // Update switch states
                             pumpSwitch.setChecked(response.getInt("pump_status") == 1);
@@ -158,5 +201,58 @@ public class HomePage extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showSystemOffDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("System Off")
+                .setMessage("Please turn ON the system first to control pumps")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void showHighWaterLevelWarning() {
+        new AlertDialog.Builder(this)
+                .setTitle("High Water Level")
+                .setMessage("Water level is " + currentWaterLevel + "%. Consider turning off the pump.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void showLowWaterDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Low Water Level")
+                .setMessage("Water level is too low (" + currentWaterLevel + "%) for watering. Please refill the tank.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void showTankFullDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Tank Full")
+                .setMessage("Water level is " + currentWaterLevel + "%. Tank is full, cannot turn on pump.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        pumpSwitch.setChecked(false);
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

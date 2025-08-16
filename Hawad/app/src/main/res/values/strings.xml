@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hawad</string>
+    <string name="app_name">AquaSense</string>
     <string name="Staff_title">Staff Number</string>
     <string name="Staff_pin">   PIN</string>
     <string name="title_activity_tank_level">TankLevelActivity</string>

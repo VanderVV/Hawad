@@ -13,14 +13,19 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
-
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/outline_person_24"
+            app:tint="#494949" />
 
         <TextView
             android:id="@+id/app_display"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
             android:contentDescription="@string/water_montor_login"
             android:text="Login"
             android:textSize="32sp"
@@ -46,18 +51,18 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="12dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:boxStrokeColor="#0A8C91">
+                app:boxStrokeColor="@color/colorAccent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/StaffNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_baseline_vpn_key_24"
-                    android:hint="phone number"
+                    android:hint="Username"
                     android:inputType="text"
                     android:maxLength="7"
                     android:minHeight="48dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:textColorHint="#0A8C91" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -77,10 +82,10 @@
                     android:minHeight="48dp"
                     android:drawableEnd="@drawable/ic_baseline_vpn_key_24"
                     android:hint="Password"
-                    android:inputType="number"
-                    android:maxLength="9"
-                    android:textColorHint="#0A8C91"
-                    
+                    android:inputType="numberPassword"
+                    android:maxLength="5"
+                    android:textColorHint="@color/colorAccent"
+
                     tools:ignore="TextContrastCheck"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -89,37 +94,16 @@
                 android:id="@+id/BtnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="40dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="27dp"
                 android:text="@string/login" /> <!-- Optional: Also round the button corners -->
         </LinearLayout>
 
     </ScrollView>
 
-        <EditText
-            android:id="@+id/editTextText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:text="  money" />
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:foregroundGravity="center_horizontal"
-        app:srcCompat="@drawable/ic_baseline_engineering_24" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" money"
-        android:textColor="#11AB00"
-        android:textSize="48sp"
-        android:textStyle="bold" />
+
 </RelativeLayout>
